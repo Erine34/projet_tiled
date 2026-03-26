@@ -119,7 +119,8 @@ imgFilesName.forEach(fileName => {
                 this.game.config.player_closeCombat = true;
             }
             // parcours des éléments de configuration pour player et ajout dans configFile
-            var playerConfigNamesTable = ["speed", "jumpHeight", "gravity", "projectileDuration", "projectileSpeed", "coolDownDuration", "maxHealth", "lifes", "canShoot"];      
+            //var playerConfigNamesTable = ["speed", "jumpHeight", "gravity", "projectileDuration", "projectileSpeed", "coolDownDuration", "maxHealth", "lifes", "canShoot"];      
+            var playerConfigNamesTable = ["speed", "jumpHeight", "gravity", "projectileDuration", "projectileSpeed", "coolDownDuration", "maxHealth", "lifes", "canShoot", "hitboxWidth", "hitboxHeight", "hitboxOffsetX", "hitboxOffsetY"];      
             playerConfigNamesTable.forEach(function (paramName, index) { 
                 if (typeof (configFile["player"][paramName]) != 'undefined') {
                   this.game.config["player_"+paramName] = configFile["player"][paramName];
