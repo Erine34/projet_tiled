@@ -51,6 +51,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setCollideWorldBounds(true); // Empêche le joueur de sortir des limites du monde
         this.body.setBounce(0.2); // Rebondissement lorsque le joueur heurte quelque chose (facultatif)
         this.body.setGravityY(300); // Gravité du joueur (facultatif, dépend du jeu)
+        this.applyCustomHitboxFromConfig(); //erine
 
         // Configuration des touches de déplacement
         this.cursors = scene.input.keyboard.createCursorKeys();
@@ -73,6 +74,67 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     // === Gestion des attributs liés au mouvement ===
+
+    /**
+     * Applique une hitbox personnalisée à partir de la configuration du jeu si elle existe.
+     */
+    applyCustomHitboxFromConfig() {
+        const hasCustomWidth = typeof (this.scene.game.config.player_hitboxWidth) != 'undefined';
+        const hasCustomHeight = typeof (this.scene.game.config.player_hitboxHeight) != 'undefined';
+        const hasCustomOffsetX = typeof (this.scene.game.config.player_hitboxOffsetX) != 'undefined';
+        const hasCustomOffsetY = typeof (this.scene.game.config.player_hitboxOffsetY) != 'undefined';
+        const hasCustomHitbox = hasCustomWidth || hasCustomHeight || hasCustomOffsetX || hasCustomOffsetY;
+
+        if (!hasCustomHitbox) return;
+
+        const width = hasCustomWidth
+            ? this.scene.game.config.player_hitboxWidth
+            : this.body.width;
+        const height = hasCustomHeight
+            ? this.scene.game.config.player_hitboxHeight
+            : this.body.height;
+        const offsetX = hasCustomOffsetX
+            ? this.scene.game.config.player_hitboxOffsetX
+            : null;
+        const offsetY = hasCustomOffsetY
+            ? this.scene.game.config.player_hitboxOffsetY
+            : null;
+
+        this.setCustomHitbox(width, height, offsetX, offsetY);
+    }
+
+    /**
+     * Définit une hitbox personnalisée pour le joueur.
+     * @param {number} width - Largeur de la hitbox.
+     * @param {number} height - Hauteur de la hitbox.
+     * @param {number} offsetX - Décalage horizontal de la hitbox.
+     * @param {number} offsetY - Décalage vertical de la hitbox.
+     */
+    setCustomHitbox(width, height, offsetX = null, offsetY = null) {
+        // Centre automatiquement la hitbox pour éviter l'effet
+        // "le perso bouge à l'intérieur de sa hitbox".
+        this.body.setSize(width, height, true);
+
+        // Si un offset est explicitement fourni, il surcharge le centrage auto.
+        if (offsetX !== null || offsetY !== null) {
+            this.body.setOffset(
+                (offsetX !== null ? offsetX : this.body.offset.x),
+                (offsetY !== null ? offsetY : this.body.offset.y)
+            );
+        }
+    }
+
+    /**
+     * Retourne les dimensions et offsets de la hitbox actuelle.
+     */
+    getHitbox() {
+        return {
+            width: this.body.width,
+            height: this.body.height,
+            offsetX: this.body.offset.x,
+            offsetY: this.body.offset.y
+        };
+    }
 
     /**
      * Retourne la vitesse actuelle du joueur.
