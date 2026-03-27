@@ -19,7 +19,7 @@ player.canShoot=false
 player_move_right.nbFrames=4
 player_jump_right.nbFrames=3
 player_shoot_right.nbFrames=4
-player_stand_right.nbFrames=2
+player_stand_right.nbFrames=1
 player_verso_move_right.nbFrames=4
 player_verso_jump_right.nbFrames=4
 player_verso_shoot_right.nbFrames=4
@@ -33,7 +33,3 @@ enemy_4_move_right.nbFrames=4
 enemy_5_move_right.nbFrames=4
 projectile_player.nbFrames=4
 
-player.hitboxWidth=55
-player.hitboxHeight=96
-player.hitboxOffsetX=21
-player.hitboxOffsetY=0
